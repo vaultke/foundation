@@ -1,0 +1,21 @@
+{
+    "name": "vaultke/foundation",
+    "description": "This is tha base api classes",
+    "keywords": ["api", "microservices", "library"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ananda Douglas",
+            "email": "douglasdaggs@gmail.com"
+        }
+    ],
+    "type": "library",
+    "require": {
+		"php": ">=7.4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "vaultke\\foundation\\": "src/"
+        }
+    }
+}
