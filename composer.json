@@ -1,6 +1,6 @@
 {
     "name": "vaultke/foundation",
-    "description": "This is tha base api classes",
+    "description": "This package seeks to help php developers configure different functions flawlesly.",
     "keywords": ["api", "microservices", "library"],
     "license": "MIT",
     "authors": [
