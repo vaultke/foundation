@@ -1,5 +1,5 @@
 <?php
-namespace machapisho\api;
+namespace vaultke\foundation;
 
 class Cors extends \yii\filters\Cors {
     public function prepareHeaders($requestHeaders) {

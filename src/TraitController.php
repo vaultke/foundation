@@ -1,6 +1,5 @@
 <?php
-
-namespace machapisho\api;
+namespace vaultke\foundation;
 
 /**
  * @author Muhamad Alfan <muhamad.alfan01@gmail.com>

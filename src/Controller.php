@@ -1,5 +1,5 @@
 <?php
-namespace machapisho\api;
+namespace vaultke\foundation;
 
 use Yii;
 use yii\filters\auth\HttpBearerAuth;
