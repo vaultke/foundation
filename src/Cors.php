@@ -1,4 +1,5 @@
 <?php
+//changed namespace from machapisho\api
 namespace vaultke\foundation;
 
 class Cors extends \yii\filters\Cors {

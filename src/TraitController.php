@@ -1,4 +1,5 @@
 <?php
+//changed namespace from machapisho\api
 namespace vaultke\foundation;
 
 /**
