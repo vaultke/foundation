@@ -11,14 +11,6 @@ class Controller extends \yii\rest\Controller
     /**
      * @inheritdoc
      */
-    public static function allowedDomains() {
-        // '*',                        // star allows all domains
-        $domains[]=$_SERVER["REMOTE_ADDR"];
-        foreach (explode(",",getenv('ALLOWED_DOMAINS')) as $domain) {
-            $domains[] = rtrim(ltrim($domain,' '),' ');
-        }
-        return $domains;
-    }
     public function behaviors() {
         $behaviors = parent::behaviors();
         unset($behaviors['authenticator']);
@@ -27,84 +19,49 @@ class Controller extends \yii\rest\Controller
                 'class' => Cors::className(),
                 'cors'  => [
                     // restrict access to domains:
-                    'Origin'      => '*',//static::allowedDomains(),
+                    'Origin'      => '*',
                     'Access-Control-Request-Method'    => ['POST', 'PUT', 'GET', 'DELETE', 'HEAD'],
                     'Access-Control-Allow-Credentials' => true,
                     'Access-Control-Max-Age'           => 3600,                 // Cache (seconds)
-                    'Access-Control-Allow-Headers'     => ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization']
+                    'Access-Control-Allow-Headers'     => ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization', 'x-service']
                 ],
             ];
         // re-add authentication filter
-        $behaviors['authenticator'] = [
-            'class' => HttpBearerAuth::className(),
-        ];
+        // $behaviors['authenticator'] = [
+        //     'class' => HttpBearerAuth::className(),
+        // ];
         //avoid authentication on CORS-pre-flight requests (HTTP OPTIONS method)
-        $behaviors['authenticator']['except'] = ['OPTIONS','login'];
+        //$behaviors['authenticator']['except'] = ['OPTIONS','login'];
 
         return $behaviors;
     }
     /**
      * Api Validate error response
      */
-    public function apiValidate($errors, $message = false)
+    public function apiValidate($errors,$acid=null)
     {
         Yii::$app->response->statusCode = 422;
         return [
-            'status' => 422,
-            //'name' => 'ValidateErrorException',
-            //'message' => $message ? $message : 'Error validation',
             'errors' => $errors
         ];
     }
-
-    /**
-     * Api Created response
-     */
-    public function apiCreated($data, $message = false)
+    public function apiValidateMultiple($errors,$id)
     {
-        Yii::$app->response->statusCode = 201;
+        Yii::$app->response->statusCode = 422;
+            foreach($errors as $key=>$value){
+                $error[$id][]=[$value->getErrors()];
+            }        
         return [
-            'statusCode' => 201,
-            'message' => $message ? $message : 'Created successfully',
-            'data' => $data
+            'errors' => $error
         ];
     }
-
-    /**
-     * Api Updated response
-     */
-    public function apiUpdated($data, $message = false)
-    {
-        Yii::$app->response->statusCode = 202;
-        return [
-            'statusCode' => 202,
-            'message' => $message ? $message : 'Updated successfully',
-            'data' => $data
-        ];
-    }
-
-    /**
-     * Api Deleted response
-     */
-    public function apiDeleted($data, $message = false)
-    {
-        Yii::$app->response->statusCode = 202;
-        return [
-            'statusCode' => 202,
-            'message' => $message ? $message : 'Deleted successfully',
-            'data' => $data
-        ];
-    }
-
     /**
      * Api Item response
      */
-    public function apiItem($data, $message = false)
+    public function apiItem($data)
     {
         Yii::$app->response->statusCode = 200;
         return [
-            'statusCode' => 200,
-            'message' => $message ? $message : 'Data retrieval successful',
             'data' => $data
         ];
     }
@@ -112,26 +69,44 @@ class Controller extends \yii\rest\Controller
     /**
      * Api Collection response
      */
-    public function apiCollection($data, $total = 0, $message = false)
+    public function apiCollection($data)
     {
         Yii::$app->response->statusCode = 200;
         return [
-            'statusCode' => 200,
-            'message' => $message ? $message : 'Data retrieval successful',
-            'data' => $data,
-            'total' => $total
+            'data'          => $data->models,
+            'countOnPage'   => $data->count,
+            'totalCount'    => $data->totalCount,
+            'pageSize'      => $data->pagination->pageSize,
+            'pageCount'     => $data->pagination->pageCount,
         ];
     }
 
     /**
-     * Api Success response
+     * Api Toast response
      */
-    public function apiSuccess($message = false)
+    public function apiToast($statusCode,$message = false)
     {
-        Yii::$app->response->statusCode = 200;
+        Yii::$app->response->statusCode = $statusCode;
         return [
-            'statusCode' => 200,
-            'message' => $message ? $message : 'Success',
+            'toast' => [
+                        'message'=>$message ? $message : \vaultke\helpers\Status::getCode($statusCode)['message'],
+                        'theme' => \vaultke\helpers\Status::getCode($statusCode)['theme']
+                    ]
+                        
         ];
+    }
+
+    /**
+     * Query parameters
+     */
+    public function apiParams($query,$modelId)
+    {   foreach($query as $key=>$value){
+            if(substr($key,0,2)=='qp'){
+                $data[$modelId][ltrim($key,"qp")]=$value;
+            }else{
+                $data[$key]=$value;
+            }
+        }
+        return $data;
     }
 }
