@@ -12,8 +12,8 @@ class Controller extends \yii\rest\Controller
      * @inheritdoc
      */
     public function behaviors() {
-        $behaviors = parent::behaviors();
-        unset($behaviors['authenticator']);
+        // $behaviors = parent::behaviors();
+        // unset($behaviors['authenticator']);
         // add CORS filter
         $behaviors['corsFilter'] = [
                 'class' => Cors::className(),
