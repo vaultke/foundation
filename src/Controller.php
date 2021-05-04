@@ -1,5 +1,4 @@
 <?php
-//changed namespace from machapisho\api
 namespace vaultke\foundation;
 use Yii;
 use yii\filters\auth\HttpBearerAuth;

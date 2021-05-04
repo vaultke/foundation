@@ -1,8 +1,8 @@
 git init
 git remote add origin https://github.com/vaultke/foundation.git
 git add --all
-git commit -m "initial files"
+git commit -m "Update"
 git branch -M master
-git tag -a v1.0.0 -m "initial release"
+git tag -a v1.0.30 -m "Update"
 git push -u origin master
 git push --tags
