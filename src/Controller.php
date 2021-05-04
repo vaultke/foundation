@@ -25,7 +25,7 @@ class Controller extends \yii\rest\Controller
                     'Access-Control-Max-Age'           => 3600,                 // Cache (seconds)
                     'Access-Control-Allow-Headers'     => ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization', 'x-service']
                 ],
-            ];
+            ]; 
         // re-add authentication filter
         // $behaviors['authenticator'] = [
         //     'class' => HttpBearerAuth::className(),
