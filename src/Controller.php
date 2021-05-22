@@ -11,8 +11,9 @@ class Controller extends \yii\rest\Controller
      * @inheritdoc
      */
     public function behaviors() {
-        // $behaviors = parent::behaviors();
-        // unset($behaviors['authenticator']);
+         $behaviors = parent::behaviors();
+         $authenticator = isset(Yii::$app->params['activateAuth']) ? Yii::$app->params['activateAuth'] : FALSE;
+         unset($behaviors['authenticator']);
         // add CORS filter
         $behaviors['corsFilter'] = [
                 'class' => Cors::className(),
@@ -25,12 +26,12 @@ class Controller extends \yii\rest\Controller
                     'Access-Control-Allow-Headers'     => ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization', 'x-service']
                 ],
             ]; 
-        // re-add authentication filter
-        // $behaviors['authenticator'] = [
-        //     'class' => HttpBearerAuth::className(),
-        // ];
-        //avoid authentication on CORS-pre-flight requests (HTTP OPTIONS method)
-        //$behaviors['authenticator']['except'] = ['OPTIONS','login'];
+        if($authenticator){
+            $behaviors['authenticator'] = [
+                'class' => HttpBearerAuth::className(),
+            ];
+            $behaviors['authenticator']['except'] = ['OPTIONS','login'];
+        }
 
         return $behaviors;
     }
@@ -61,7 +62,7 @@ class Controller extends \yii\rest\Controller
     {
         Yii::$app->response->statusCode = 200;
         return [
-            'data' => $data
+            'payload' => $data
         ];
     }
 
@@ -72,7 +73,7 @@ class Controller extends \yii\rest\Controller
     {
         Yii::$app->response->statusCode = 200;
         return [
-            'data'          => $data->models,
+            'payload'          => $data->models,
             'countOnPage'   => $data->count,
             'totalCount'    => $data->totalCount,
             'pageSize'      => $data->pagination->pageSize,

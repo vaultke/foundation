@@ -26,7 +26,7 @@ trait UserJwt
      */
     protected static function getSecretKey()
     {
-        return isset(Yii::$app->params['secretKey']) ? Yii::$app->params['secretKey'] : 'tokenDefault';
+        return isset(Yii::$app->params['secretKey']) ? Yii::$app->params['secretKey'] : sha1('53cr3tk3y');
     }
 
     /**
@@ -135,7 +135,8 @@ trait UserJwt
             'aud' => $hostInfo,
             'iat' => $currentTime,
             'nbf' => $currentTime,
-            'exp' => static::getExpireIn()
+            'exp' => static::getExpireIn(),
+            'rbac'=> $this->getRoles()
         ], static::getHeaderToken());
 
         // Set up id
