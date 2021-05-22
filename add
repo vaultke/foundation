@@ -1,8 +1,8 @@
 git init
 git remote add origin https://github.com/vaultke/foundation.git
 git add --all
-git commit -m "Update"
+git commit -m "removed rbac from token"
 git branch -M master
-git tag -a v1.0.31 -m "Update"
+git tag -a v1.0.32 -m "removed rbac from token"
 git push -u origin master
 git push --tags

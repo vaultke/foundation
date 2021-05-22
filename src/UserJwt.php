@@ -135,8 +135,7 @@ trait UserJwt
             'aud' => $hostInfo,
             'iat' => $currentTime,
             'nbf' => $currentTime,
-            'exp' => static::getExpireIn(),
-            'rbac'=> $this->getRoles()
+            'exp' => static::getExpireIn()
         ], static::getHeaderToken());
 
         // Set up id
