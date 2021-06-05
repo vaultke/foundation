@@ -11,28 +11,31 @@ class Controller extends \yii\rest\Controller
      * @inheritdoc
      */
     public function behaviors() {
-         $behaviors = parent::behaviors();
-         $authenticator = isset(Yii::$app->params['activateAuth']) ? Yii::$app->params['activateAuth'] : FALSE;
-         unset($behaviors['authenticator']);
-        // add CORS filter
-        $behaviors['corsFilter'] = [
-                'class' => Cors::className(),
-                'cors'  => [
-                    // restrict access to domains:
-                    'Origin'      => '*',
-                    'Access-Control-Request-Method'    => ['POST', 'PUT', 'GET', 'DELETE', 'HEAD'],
-                    'Access-Control-Allow-Credentials' => true,
-                    'Access-Control-Max-Age'           => 3600,                 // Cache (seconds)
-                    'Access-Control-Allow-Headers'     => ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization', 'x-service']
-                ],
-            ]; 
-        if($authenticator){
+        $auth = isset(Yii::$app->params['activateAuth']) ? Yii::$app->params['activateAuth'] : FALSE;
+        $behavior = [
+            'class' => Cors::className(),
+            'cors'  => [
+                // restrict access to domains:
+                'Origin'                           => ['*'],
+                'Access-Control-Allow-Origin'      => ['*'],                
+                'Access-Control-Request-Method'    => ['POST', 'PUT', 'PATCH', 'GET', 'DELETE', 'HEAD'],
+                'Access-Control-Allow-Credentials' => true,
+                'Access-Control-Max-Age'           => 3600,                
+                'Access-Control-Allow-Headers'     => ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization', 'x-service']
+                
+            ],
+        ]; 
+        if($auth){
+            $behaviors = parent::behaviors();
+            unset($behaviors['authenticator']);
+            $behaviors['corsFilter']=$behavior;
             $behaviors['authenticator'] = [
                 'class' => HttpBearerAuth::className(),
             ];
-            $behaviors['authenticator']['except'] = ['OPTIONS','login'];
+        }else{
+            $behaviors['corsFilter']=$behavior;
         }
-
+        
         return $behaviors;
     }
     /**
