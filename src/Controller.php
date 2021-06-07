@@ -32,6 +32,7 @@ class Controller extends \yii\rest\Controller
             $behaviors['authenticator'] = [
                 'class' => HttpBearerAuth::className(),
             ];
+            $behaviors['authenticator']['except'] = ['OPTIONS','register','login','error','request-password-reset','reset-password'];
         }else{
             $behaviors['corsFilter']=$behavior;
         }

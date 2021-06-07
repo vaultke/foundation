@@ -1,8 +1,8 @@
 git init
 git remote add origin https://github.com/vaultke/foundation.git
 git add --all
-git commit -m "removed cors class and did a rewrite of behaviors method in base controller"
+git commit -m "adjusted authenticator"
 git branch -M master
-git tag -a v1.0.33 -m "removed cors class and did a rewrite of behaviors method in base controller"
+git tag -a v1.0.34 -m "adjusted authenticator"
 git push -u origin master
 git push --tags
