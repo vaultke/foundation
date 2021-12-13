@@ -3,6 +3,6 @@ git remote add origin https://github.com/vaultke/foundation.git
 git add --all
 git commit -m "adjusted authenticator"
 git branch -M master
-git tag -a v1.0.34 -m "adjusted authenticator"
+git tag -a v1.0.35 -m "Code base refactoring"
 git push -u origin master
 git push --tags

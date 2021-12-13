@@ -11,8 +11,16 @@
     ],
     "type": "library",
     "require": {
-		"php": ">=7.0"
+		"php": ">=7.0",
+        "yiisoft/yii2": "*",
+        "guzzlehttp/guzzle": "*"
     },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "vaultke\\foundation\\": "src/"
