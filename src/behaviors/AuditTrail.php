@@ -57,13 +57,11 @@
         {
             $app = Yii::$app;
             $request = $app->request;
-            try {
+            if(Yii::$app->user->identity != null){
                 $userId = Yii::$app->user->identity->user_id;
-                
-            } catch (Exception $e) {
+            }else{
                 $userId = self::NO_USER_ID;
             }
-            
             $newAttributes = $this->owner->getAttributes();
             $oldAttributes = $event->changedAttributes;
             
