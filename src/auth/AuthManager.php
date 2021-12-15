@@ -4,6 +4,22 @@ namespace vaultke\foundation\auth;
 use Yii;
 class AuthManager extends \yii\rbac\DbManager
 {
+    /**
+     * @var string the name of the table storing authorization items. Defaults to "auth_item".
+     */
+    public $itemTable = '{{%item}}';
+    /**
+     * @var string the name of the table storing authorization item hierarchy. Defaults to "item_child".
+     */
+    public $itemChildTable = '{{%item_child}}';
+    /**
+     * @var string the name of the table storing authorization item assignments. Defaults to "assignment".
+     */
+    public $assignmentTable = '{{%assignment}}';
+    /**
+     * @var string the name of the table storing rules. Defaults to "rule".
+     */
+    public $ruleTable = '{{%rule}}'; 
     use AuthJwt;
     protected $checkAccessAssignments = [];
 
