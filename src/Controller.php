@@ -28,7 +28,7 @@ class Controller extends \yii\rest\Controller
             $behaviors['authenticator'] = [
                 'class' => HttpBearerAuth::className(),
             ];
-            $behaviors['authenticator']['except'] = ['OPTIONS','register','login','error','request-password-reset','reset-password'];
+            $behaviors['authenticator']['except'] = Yii::$app->params['safeEndpoints'];
         }else{
             $behaviors['corsFilter']=$behavior;
         }
