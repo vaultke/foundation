@@ -1,8 +1,6 @@
-git init
-git remote add origin https://github.com/vaultke/foundation.git
 git add --all
-git commit -m "Updated auth manager and AR"
+git commit -m "Fixed cryptKey Error"
 git branch -M master
-git tag -a v1.0.37 -m "AR & DB Manager fix"
+git tag -a v1.0.38 -m "Fixed cryptKey Error"
 git push -u origin master
 git push --tags
