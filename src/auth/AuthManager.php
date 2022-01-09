@@ -31,8 +31,13 @@ class AuthManager extends \yii\rbac\DbManager
 
         return $this->encrypt(rtrim($permissions,","));
     }
-    public function checkAccess($userId, $permissionName, $error=TRUE)
+    public function checkAccess($userId, $permissionName,$params = [])
     {
+        if(substr($permissionName,-12)=="view-deleted"){
+            $error = false;
+        }else{
+            $error = true;
+        }
         if (isset($this->checkAccessAssignments[(string) $userId])) {
             $assignments = $this->checkAccessAssignments[(string) $userId];
         } else {

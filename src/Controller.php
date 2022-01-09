@@ -74,7 +74,7 @@ class Controller extends \yii\rest\Controller
         if(!$options['oneRecord']){
             $array = [ 
                 'dataPayload'=> [
-                    'data'              => $data->models,
+                    'data'              => !empty($data->models)? $data->models : 'No records available',
                     'countOnPage'       => $data->count,
                     'totalCount'        => $data->totalCount,
                     'perPage'           => $data->pagination->pageSize,
@@ -128,6 +128,9 @@ class Controller extends \yii\rest\Controller
      * Query parameters cleanup
      */
     public function queryParameters($query,$modelId){   
+        if(!$query){
+            $data = null;
+        }
         foreach($query as $key=>$value){
             if(substr($key,0,1) == '_'){
                 $data[$modelId][ltrim($key,"_")]=$value;
