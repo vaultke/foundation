@@ -1,6 +1,0 @@
-git add --all
-git commit -m "updated logic in Controller and authmanager"
-git branch -M master
-git tag -a v1.0.39 -m "updated logic in Controller and authmanager"
-git push -u origin master
-git push --tags
