@@ -3,7 +3,7 @@ namespace vaultke\foundation;
 
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\AttributeBehavior;
-use vaultke\foundation\behaviors\Delete;
+use vaultke\foundation\behaviors\SoftDeleteBehavior;
 class ActiveRecord extends \yii\db\ActiveRecord
 {
 	public $cryptKey = '';
@@ -12,7 +12,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
 	{
 	    return [
 	        TimestampBehavior::className(),
-			\vaultke\foundation\behaviors\Delete::className(),
+			SoftDeleteBehavior::className(),
 			\vaultke\foundation\behaviors\AuditTrail::className(),
 			[
 				'class' => AttributeBehavior::class,

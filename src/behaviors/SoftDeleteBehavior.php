@@ -4,7 +4,48 @@ use yii\behaviors\AttributeBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
 
-class Delete extends AttributeBehavior
+/**
+ * SoftDelete behavior automatically fills attributes for mark record is deleted.
+ *
+ * Usage:
+ * ```php
+ *
+ * use vaultke\foundation\behaviors\SoftDeleteBehavior;
+ *
+ * public function behaviors ()
+ * {
+ *      return [
+ *          SoftDeleteBehavior::className()
+ *      ];
+ * }
+ *
+ * ```
+ *
+ * By default the SoftDelete behavior fills the `is_deleted` attribute with the number - 1
+ *
+ * If your attribute names are different or you want to use a different way of mark deleted record
+ * you may configure the [[attribute]] and [[value]] properties like the following:
+ *
+ * ```php
+ * use vaultke\foundation\behaviors\SoftDeleteBehavior;
+ * use yii\db\Expression;
+ *
+ * public function behaviors ()
+ * {
+ *      return [
+ *          [
+ *              'class' => SoftDeleteBehavior::className(),
+ *              'attribute' => 'deleted_time',
+ *              'value' => new Expression('NOW()'),
+ *              'restoreValue' => null
+ *          ]
+ *      ];
+ * }
+ * ```
+ *
+ * @author Ananda Douglas <douglasdaggs@gmail.com>
+ */
+class SoftDeleteBehavior extends AttributeBehavior
 {
     /**
      * @var string the attribute that will receive the deleted value

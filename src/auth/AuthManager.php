@@ -28,11 +28,14 @@ class AuthManager extends \yii\rbac\DbManager
         foreach($assigned as $index => $row){
             $permissions .='"'.$index.'",';
         }
-
+ 
         return $this->encrypt(rtrim($permissions,","));
     }
     public function checkAccess($userId, $permissionName,$params = [])
     {
+        if(isset(Yii::$app->params['deactivateRbac']) && Yii::$app->params['deactivateRbac']){
+            return true;
+        }
         if(substr($permissionName,-12)=="view-deleted"){
             $error = false;
         }else{

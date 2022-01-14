@@ -8,15 +8,15 @@ class AcidModel extends \yii\base\Model
     /**
      * Creates and populates a set of models.
      *
-     * @param string $modelClass
+     * @param string $creator
      * @param array $multipleModels
      * @return array
      */
-    public static function createMultiple($modelClass, $multipleModels = [],$id='id')
+    public static function createMultiple($creator, $multipleModels = [],$id='id')
     {
-        $model    = new $modelClass;
-        $formName = $model->formName();
-        $post     = Yii::$app->request->post($formName);
+        $model    = new $creator['modelClass'];
+        //$formName = $model->formName();
+        $post     = $creator['data'];//Yii::$app->request->post($formName);
         $models   = [];
 
         if (! empty($multipleModels)) {
@@ -29,12 +29,12 @@ class AcidModel extends \yii\base\Model
                 if (isset($item[$id]) && !empty($item[$id]) && isset($multipleModels[$item[$id]])) {
                     $models[] = $multipleModels[$item[$id]];
                 } else {
-                    $models[] = new $modelClass;
+                    $models[] = new $creator['modelClass'];
                 }
             }
         }
 
-        unset($model, $formName, $post);
+        unset($model, /* $formName, */ $post);
 
         return $models;
     }

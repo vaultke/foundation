@@ -38,14 +38,16 @@ class Controller extends \yii\rest\Controller
     /**
      * error response
      */
-    public function errorResponse($errors,$errorId=false,$message=false)
+    public function errorResponse($errors,$acidErrors=false,$message=false)
     {
         Yii::$app->response->statusCode = 422;
-        if($errorId){
-            foreach($errors as $key=>$value){
-                $error[$id][]=[$value->getErrors()];
+        if(is_array($acidErrors)){
+            foreach($acidErrors['acidErrorModel'] as $key=>$value){
+                $error[$acidErrors['errorKey']][]=[$value->getErrors()];
             }
-            $errors= $error; 
+        }
+        if(isset($error)){
+            $errors = array_merge($errors,$error);
         }
         foreach($errors as $key=>$value){
             $errors[$key]=$value[0];
@@ -90,13 +92,17 @@ class Controller extends \yii\rest\Controller
                 ]
             ];
             if($options['message']){
-                $array = array_merge($array, $this->toastResponse(
-                    [
-                        'statusCode'=>$options['statusCode'],
-                        'message'=>$options['message'],
-                        'theme'=>'success'
-                    ]
-                ));
+                $toastArray = [
+                    'statusCode'=>$options['statusCode'],
+                    'message'=>$options['message'],
+                    'theme'=>'success',
+                ];
+                if(isset($options['toastOptions'])){
+                    $toastArray['toastOptions'] = $options['toastOptions'];
+                }
+                    
+                
+                $array = array_merge($array, $this->toastResponse($toastArray));
             }
             //$array['dataPayload'] = $model;
         }
@@ -109,17 +115,16 @@ class Controller extends \yii\rest\Controller
     {
         $options = array_merge(['statusCode'=>200,'theme'=>false, 'message'=>false], $options);
         Yii::$app->response->statusCode = $options['statusCode'];
+        if(isset($options['toastOptions'])){
+            $clientOptions = $options['toastOptions'];
+        }else{
+            $clientOptions = [];
+        }
         $array = [ 
             'toastPayload'=> [
                 'toastMessage'  => $options['message'] ? $options['message'] : 'Hello toast',
                 'toastTheme'    => $options['theme'] ? $options['theme'] : 'info',
-                'toastOptions'  => function($options){
-                    if(isset($options['toastOptions'])){
-                        return $options['toastOption'];
-                    }else{
-                        return [];
-                    }
-                }
+                'toastOptions'  => array_merge(['type'=>'swal'], $clientOptions)
             ]
         ];
         return $array;
