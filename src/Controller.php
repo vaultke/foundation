@@ -124,7 +124,7 @@ class Controller extends \yii\rest\Controller
             'toastPayload'=> [
                 'toastMessage'  => $options['message'] ? $options['message'] : 'Hello toast',
                 'toastTheme'    => $options['theme'] ? $options['theme'] : 'info',
-                'toastOptions'  => array_merge(['type'=>'swal'], $clientOptions)
+                'toastOptions'  => array_merge(['type'=>'sweetAlert'], $clientOptions)
             ]
         ];
         return $array;

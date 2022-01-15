@@ -15,7 +15,7 @@ trait ServiceConsumer
         try {
             $client = new Client(['base_uri' => Url::base(true)]);
 
-            //$headers['Authorization'] = 'Bearer '. app('Illuminate\Http\Request')->bearerToken();
+            $headers['Authorization'] = Yii::$app->request->headers['authorization'];
 
             $response = $client->request($method, $requestUrl, ['json' => $requestBody, /*'headers' => $headers,*/ 'query' => $query]);
 
