@@ -6,6 +6,7 @@ use yii\behaviors\AttributeBehavior;
 use vaultke\foundation\behaviors\SoftDeleteBehavior;
 class ActiveRecord extends \yii\db\ActiveRecord
 {
+	use Status;
 	public $cryptKey = '';
 	
 	public function behaviors()

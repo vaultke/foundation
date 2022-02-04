@@ -4,7 +4,7 @@ use Yii;
 use yii\filters\Cors;
 class Controller extends \yii\rest\Controller
 {
-   
+    use Status;
     public $enableCsrfValidation = false;
     
     public function behaviors() {
@@ -41,17 +41,20 @@ class Controller extends \yii\rest\Controller
     public function errorResponse($errors,$acidErrors=false,$message=false)
     {
         Yii::$app->response->statusCode = 422;
+        foreach($errors as $key=>$value){
+            $errors[$key]=$value[0];
+        }
         if(is_array($acidErrors)){
             foreach($acidErrors['acidErrorModel'] as $key=>$value){
-                $error[$acidErrors['errorKey']][]=[$value->getErrors()];
+                foreach($value->getErrors() as $k=>$value){
+                    $error[$acidErrors['errorKey']][$key][$k] = $value[0];
+                }
             }
         }
         if(isset($error)){
             $errors = array_merge($errors,$error);
         }
-        foreach($errors as $key=>$value){
-            $errors[$key]=$value[0];
-        }
+        
         $array['errorPayload']['errors']=$errors;
 
         if($message){
