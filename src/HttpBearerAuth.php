@@ -1,36 +1,6 @@
 <?php
-/**
- * @link http://www.yiiframework.com/
- * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
- */
-
 namespace vaultke\foundation;
 
-/**
- * HttpHeaderAuth is an action filter that supports HTTP authentication through HTTP Headers.
- *
- * You may use HttpHeaderAuth by attaching it as a behavior to a controller or module, like the following:
- *
- * ```php
- * public function behaviors()
- * {
- *     return [
- *         'basicAuth' => [
- *             'class' => \yii\filters\auth\HttpHeaderAuth::class,
- *         ],
- *     ];
- * }
- * ```
- *
- * The default implementation of HttpHeaderAuth uses the [[\yii\web\User::loginByAccessToken()|loginByAccessToken()]]
- * method of the `user` application component and passes the value of the `X-Api-Key` header. This implementation is used
- * for authenticating API clients.
- *
- * @author Qiang Xue <qiang.xue@gmail.com>
- * @author Benoît Boure <benoit.boure@gmail.com>
- * @since 2.0.14
- */ 
 class HttpBearerAuth extends \yii\filters\auth\AuthMethod
 {
     /**

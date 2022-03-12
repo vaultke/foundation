@@ -21,7 +21,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
 					ActiveRecord::EVENT_BEFORE_INSERT => $this->cryptKey.'_crypt_id',
 				],
 				'value' => function ($event) {
-					return Helpers::uid();
+					return Helpers::cipherKey();
 				},
 			],
 	    ];

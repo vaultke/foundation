@@ -6,17 +6,12 @@ namespace vaultke\foundation;
  * @since 1.0
  */
 class Helpers {
-	/**
-     *  Menampilkan url yang sedang aktif
-     *
-     *  @return string
-     */
     public function baseUrl()
     {
         return \yii\helpers\Url::base(true);
     }
 
-    public static function uid($numerical=false){
+    public static function cipherKey($numerical=false){
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $randomString = '';
