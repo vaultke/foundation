@@ -24,6 +24,7 @@ trait ServiceConsumer
     public function StatusCodeHandling($e)
     {
         return json_decode($e->getResponse()->getBody(true)->getContents());
+        
     }
     public function sendRequest($method, $request=[])
     {
