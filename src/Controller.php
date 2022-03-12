@@ -5,6 +5,7 @@ use yii\filters\Cors;
 class Controller extends \yii\rest\Controller
 {
     use Status;
+    use ServiceConsumer;
     public $enableCsrfValidation = false;
     
     public function behaviors() {

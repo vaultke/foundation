@@ -1,33 +1,48 @@
 <?php
 namespace vaultke\foundation;
 
-use Exception;
-use yii\httpclient\Client;
-use yii\web\Response;
+use Yii;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Psr7\Request;
 use yii\helpers\Url;
 trait ServiceConsumer
 {
-    /**
-     * Send a request to any service
-     */
-    public function performRequest($method, $requestUrl, $requestBody = [], $headers = [], $query = [])
+    public function client(){
+        return new Client(['base_uri' => Url::base(true)]);
+    }
+    private static function options($data,$query){
+        return [
+                'json'=>$data,
+                'query'=>$query,
+                'headers' =>[
+                    'Accept' => 'application/json',
+                    'Content-type' => 'application/json',
+                    'authorization' => Yii::$app->request->headers['authorization']
+               ]];
+    }
+    public function StatusCodeHandling($e)
     {
-        try {
-            $client = new Client(['base_uri' => Url::base(true)]);
-
-            $headers['Authorization'] = Yii::$app->request->headers['authorization'];
-
-            $response = $client->request($method, $requestUrl, ['json' => $requestBody, /*'headers' => $headers,*/ 'query' => $query]);
-
-            $status = $response->getStatusCode();
-
-            if ( $status == Response::HTTP_OK || $status == Response::HTTP_CREATED ){
-                return json_decode((string) $response->getBody());
-            } else {
-                return null;
-            }
-        } catch(Exception $ex){
-            return null;
+        return json_decode($e->getResponse()->getBody(true)->getContents());
+    }
+    public function sendRequest($method, $request=[])
+    {
+        if(isset($request['url'])){
+            $request_url = (substr($request['url'],0,1) != '/') ? '/'.$request['url'] : $request['url'];
+        }else{
+            $request_url='/';
         }
+        $data = (isset($request['data'])) ? $request['data'] : [];
+        $query = (isset($request['query'])) ? $request['query'] : [];
+        try{
+            $method = strtolower($method);
+            $response = $this->client()->$method($request_url,$this->options($data,$query));
+            $result = $response->getBody()->getContents();
+            return json_decode($result);
+        }catch(RequestException $e){
+            $response = $this->StatusCodeHandling($e);
+            return $response;
+        }
+        
     }
 }
