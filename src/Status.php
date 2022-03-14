@@ -5,29 +5,38 @@ trait Status{
     public  function loadStatus($code){
         $codes = array_merge(self::appCodes(),self::coreCodes());
         $result = $codes[$code] ? $codes[$code] : [$code,'unknown', 'unknown'];
-        return ['code'=>$result[0],'label'=>$result[1],'theme'=>$result[2]];
+        $export = [
+          'code'=>$result[0],
+          'label'=>$result[1],
+          'theme'=>$result[2],
+          'operation'=> $result[3] ? $result[3] : 'N/A',
+        ];
+        if($export['operation']=='N/A'){
+          unset($export['operation']);
+        }
+        return $export;
       }
       protected function appCodes() {
         $codes = [
           0   => ['0','No', 'danger'],
           1   => ['1','Yes', 'success'],
           2   => ['2','Partial', 'warning'],
-          3   => ['3','Cancelled', 'danger'],
-          4   => ['4','Declined', 'warning'],
-          5   => ['5','Approved', 'success'],
+          3   => ['3','Cancelled', 'danger', 'Cancel'],
+          4   => ['4','Declined', 'warning', 'Decline'],
+          5   => ['5','Approved', 'success', 'Approve'],
           6   => ['6','Pending', 'info'],
-          7   => ['7','Archived', 'warning'],
+          7   => ['7','Archived', 'warning', 'Archive'],
           8   => ['8','Deleted', 'danger'],
-          9   => ['9','Inactive', 'warning'],
-          10  => ['10','Active', 'success'],
+          9   => ['9','Inactive', 'warning','Deactivate'],
+          10  => ['10','Active', 'success','Activate'],
 
           11  => ['11','Due', 'info'],
           12  => ['12','Overdue', 'danger'],
-          13  => ['13','Paid', 'success'],
+          13  => ['13','Paid', 'success','Pay'],
           14  => ['14','Contract', 'info'],
           15  => ['15','Permanent', 'success'],
           16  => ['16','Terminated', 'danger'],
-          17  => ['17','Suspended', 'warning'],
+          17  => ['17','Suspended', 'warning','Suspend'],
           18  => ['18','In Dispute', 'warning'],
           19  => ['19','Unpaid', 'warning'],
           20  => ['20','On Leave', 'info'],
