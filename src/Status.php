@@ -9,7 +9,7 @@ trait Status{
           'code'=>$result[0],
           'label'=>$result[1],
           'theme'=>$result[2],
-          'operation'=> $result[3] ? $result[3] : 'N/A',
+          'operation'=> isset($result[3]) ? $result[3] : 'N/A',
         ];
         if($export['operation']=='N/A'){
           unset($export['operation']);
